@@ -103,4 +103,39 @@ public class Graph {
     public void outputGraph(String path) throws IOException {
         outputDOTGraph(path);
     }
+
+    // Feature 4: output graphics using Graphviz
+    public boolean outputGraphics(String path, String format) {
+
+        if (format == null || !format.equalsIgnoreCase("png")) {
+            return false; // Only png required
+        }
+
+        try {
+            // Create temporary DOT file
+            String tempDotPath = "temp_graph.dot";
+            outputDOTGraph(tempDotPath);
+
+            ProcessBuilder pb = new ProcessBuilder(
+                    "dot",
+                    "-T" + format,
+                    tempDotPath,
+                    "-o",
+                    path
+            );
+
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            int exitCode = process.waitFor();
+
+            // Clean up temporary file
+            Files.deleteIfExists(Paths.get(tempDotPath));
+
+            return exitCode == 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

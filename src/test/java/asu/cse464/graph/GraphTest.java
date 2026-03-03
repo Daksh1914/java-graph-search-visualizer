@@ -67,4 +67,24 @@ class GraphTest {
 
         assertTrue(output.contains("a -> b"));
     }
+
+    @Test
+    void testOutputGraphics() throws Exception {
+
+        Graph graph = new Graph();
+
+        graph.addNode("a");
+        graph.addNode("b");
+        graph.addEdge("a", "b");
+
+        String outputPath = "test_output.png";
+
+        boolean success = graph.outputGraphics(outputPath, "png");
+
+        assertTrue(success);
+        assertTrue(Files.exists(Paths.get(outputPath)));
+
+        // Cleanup
+        Files.deleteIfExists(Paths.get(outputPath));
+    }
 }

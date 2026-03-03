@@ -23,25 +23,25 @@ class GraphTest {
         assertEquals(expected, output);
     }
 
-//    @Test
-//    void testAddNodeAndAddNodes() {
-//
-//        Graph graph = new Graph();
-//
-//        // Test addNode
-//        assertTrue(graph.addNode("x"));
-//        assertFalse(graph.addNode("x")); // duplicate
-//
-//        // Test addNodes
-//        String[] labels = {"a", "b", "c", "a"};
-//        graph.addNodes(labels);
-//
-//        String output = graph.toString();
-//        output = output.replace("\r\n", "\n").trim();
-//
-//        assertTrue(output.contains("x"));
-//        assertTrue(output.contains("a"));
-//        assertTrue(output.contains("b"));
-//        assertTrue(output.contains("c"));
-//    }
+    @Test
+    void testAddNodeAndAddNodes() {
+
+        Graph graph = new Graph();
+
+        // Test addNode
+        assertTrue(graph.addNode("x"));
+        assertFalse(graph.addNode("x")); // duplicate
+
+        // Test addNodes
+        String[] labels = {"a", "b", "c", "a"};
+        graph.addNodes(labels);
+
+        String output = graph.toString();
+        output = output.replace("\r\n", "\n").trim();
+
+        assertTrue(output.contains("x"));
+        assertTrue(output.contains("a"));
+        assertTrue(output.contains("b"));
+        assertTrue(output.contains("c"));
+    }
 }

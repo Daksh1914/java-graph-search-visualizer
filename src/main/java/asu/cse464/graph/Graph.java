@@ -63,23 +63,23 @@ public class Graph {
     }
 
 
-//    // Feature 2: add a single node with duplicate check
-//    public boolean addNode(String label) {
-//        if (label == null || label.trim().isEmpty()) {
-//            return false;
-//        }
-//
-//        return nodes.add(label.trim()); // returns false if duplicate
-//    }
-//
-//    // Feature 2: add multiple nodes
-//    public void addNodes(String[] labels) {
-//        if (labels == null) return;
-//
-//        for (String label : labels) {
-//            addNode(label);
-//        }
-//    }
+    // Feature 2: add a single node with duplicate check
+    public boolean addNode(String label) {
+        if (label == null || label.trim().isEmpty()) {
+            return false;
+        }
+
+        return nodes.add(label.trim()); // returns false if duplicate
+    }
+
+    // Feature 2: add multiple nodes
+    public void addNodes(String[] labels) {
+        if (labels == null) return;
+
+        for (String label : labels) {
+            addNode(label);
+        }
+    }
 
     // required alias
     public void outputGraph(String path) throws IOException {

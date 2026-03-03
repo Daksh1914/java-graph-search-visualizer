@@ -44,4 +44,27 @@ class GraphTest {
         assertTrue(output.contains("b"));
         assertTrue(output.contains("c"));
     }
+
+    @Test
+    void testAddEdge() {
+
+        Graph graph = new Graph();
+
+        graph.addNode("a");
+        graph.addNode("b");
+
+        // valid edge
+        assertTrue(graph.addEdge("a", "b"));
+
+        // duplicate edge
+        assertFalse(graph.addEdge("a", "b"));
+
+        // edge with missing node
+        assertFalse(graph.addEdge("a", "c"));
+
+        String output = graph.toString();
+        output = output.replace("\r\n", "\n").trim();
+
+        assertTrue(output.contains("a -> b"));
+    }
 }

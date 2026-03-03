@@ -81,6 +81,24 @@ public class Graph {
         }
     }
 
+    // Feature 3: add edge with duplicate checking
+    public boolean addEdge(String srcLabel, String dstLabel) {
+
+        if (srcLabel == null || dstLabel == null) {
+            return false;
+        }
+
+        srcLabel = srcLabel.trim();
+        dstLabel = dstLabel.trim();
+
+        // Both nodes must exist before adding edge
+        if (!nodes.contains(srcLabel) || !nodes.contains(dstLabel)) {
+            return false;
+        }
+
+        return edges.add(srcLabel + " -> " + dstLabel);
+    }
+
     // required alias
     public void outputGraph(String path) throws IOException {
         outputDOTGraph(path);

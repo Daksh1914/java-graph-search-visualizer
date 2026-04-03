@@ -173,5 +173,25 @@ class GraphTest {
         assertEquals("a -> b -> c", path.toString());
     }
 
+    @Test
+    public void testGraphSearchWithAlgorithm() throws Exception {
+        Graph g = new Graph();
+
+        g.addNode("A");
+        g.addNode("B");
+        g.addNode("C");
+        g.addNode("D");
+
+        g.addEdge("A", "B");
+        g.addEdge("B", "C");
+        g.addEdge("C", "D");
+
+        Path bfsPath = g.graphSearch("A", "D", Algorithm.BFS);
+        Path dfsPath = g.graphSearch("A", "D", Algorithm.DFS);
+
+        assertNotNull(bfsPath);
+        assertNotNull(dfsPath);
+    }
+
 }
 

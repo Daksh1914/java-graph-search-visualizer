@@ -270,4 +270,13 @@ public class Graph {
         path.remove(path.size() - 1);
         return false;
     }
+
+    public Path graphSearch(String src, String dst, Algorithm algo) {
+
+        if (algo == Algorithm.BFS) {
+            return graphSearch(src, dst); // existing BFS
+        } else {
+            return graphSearchDFS(src, dst); // existing DFS
+        }
+    }
 }

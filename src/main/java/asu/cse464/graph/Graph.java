@@ -1,5 +1,5 @@
 package asu.cse464.graph;
-
+import asu.cse464.graph.Path;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -183,5 +183,47 @@ public class Graph {
 
     public Set<String> getEdges() {
         return edges;
+    }
+
+    public Path graphSearchDFS(String src, String dst) {
+
+        if (!nodes.contains(src) || !nodes.contains(dst)) {
+            return null;
+        }
+
+        Set<String> visited = new HashSet<>();
+        List<String> path = new ArrayList<>();
+
+        if (dfsHelper(src, dst, visited, path)) {
+            return new Path(path);
+        }
+
+        return null;
+    }
+
+    private boolean dfsHelper(String current, String dst, Set<String> visited, List<String> path) {
+
+        visited.add(current);
+        path.add(current);
+
+        if (current.equals(dst)) {
+            return true;
+        }
+
+        for (String[] edge : edges) {
+
+            String from = edge[0];
+            String to = edge[1];
+
+            if (from.equals(current) && !visited.contains(to)) {
+
+                if (dfsHelper(to, dst, visited, path)) {
+                    return true;
+                }
+            }
+        }
+
+        path.remove(path.size() - 1);
+        return false;
     }
 }

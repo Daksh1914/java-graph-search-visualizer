@@ -184,4 +184,47 @@ public class Graph {
     public Set<String> getEdges() {
         return edges;
     }
+
+    public Path graphSearch(String src, String dst) {
+
+        if (!nodes.contains(src) || !nodes.contains(dst)) {
+            return null;
+        }
+
+        Queue<List<String>> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+
+        List<String> startPath = new ArrayList<>();
+        startPath.add(src);
+
+        queue.add(startPath);
+        visited.add(src);
+
+        while (!queue.isEmpty()) {
+
+            List<String> currentPath = queue.poll();
+            String lastNode = currentPath.get(currentPath.size() - 1);
+
+            if (lastNode.equals(dst)) {
+                return new Path(currentPath);
+            }
+
+            for (String edge : edges) {
+                String[] parts = edge.split("->");
+                String source = parts[0].trim();
+                String neighbor = parts[1].trim();
+
+                if (source.equals(lastNode) && !visited.contains(neighbor)) {
+                    visited.add(neighbor);
+
+                    List<String> newPath = new ArrayList<>(currentPath);
+                    newPath.add(neighbor);
+
+                    queue.add(newPath);
+                }
+            }
+        }
+
+        return null;
+    }
 }

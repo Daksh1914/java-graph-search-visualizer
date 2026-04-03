@@ -155,5 +155,23 @@ class GraphTest {
         assertEquals(0, g.getEdges().size());
     }
 
+    @Test
+    public void testGraphSearch() {
+
+        Graph g = new Graph();
+
+        g.addNode("a");
+        g.addNode("b");
+        g.addNode("c");
+
+        g.addEdge("a", "b");
+        g.addEdge("b", "c");
+
+        Path path = g.graphSearch("a", "c");
+
+        assertNotNull(path);
+        assertEquals("a -> b -> c", path.toString());
+    }
+
 }
 

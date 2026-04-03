@@ -138,4 +138,50 @@ public class Graph {
             return false;
         }
     }
+
+    public void removeNode(String label) {
+        if (!nodes.contains(label)) {
+            throw new RuntimeException("Node does not exist: " + label);
+        }
+
+        nodes.remove(label);
+
+        // remove edges connected to this node
+        edges.removeIf(edge -> {
+            String[] parts = edge.split("->");
+            String src = parts[0].trim();
+            String dst = parts[1].trim();
+            return src.equals(label) || dst.equals(label);
+        });
+    }
+
+    public void removeNodes(String[] labels) {
+        for (String label : labels) {
+            if (!nodes.contains(label)) {
+                throw new RuntimeException("Node does not exist: " + label);
+            }
+        }
+
+        for (String label : labels) {
+            removeNode(label);
+        }
+    }
+
+    public void removeEdge(String srcLabel, String dstLabel) {
+        String target = srcLabel + " -> " + dstLabel;
+
+        if (!edges.contains(target)) {
+            throw new RuntimeException("Edge does not exist: " + target);
+        }
+
+        edges.remove(target);
+    }
+
+    public Set<String> getNodes() {
+        return nodes;
+    }
+
+    public Set<String> getEdges() {
+        return edges;
+    }
 }

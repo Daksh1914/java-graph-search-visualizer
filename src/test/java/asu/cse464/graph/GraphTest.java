@@ -87,4 +87,68 @@ class GraphTest {
         // Cleanup
         Files.deleteIfExists(Paths.get(outputPath));
     }
+
+    @Test
+    public void testRemoveSuccess() {
+        Graph g = new Graph();
+
+        g.addNode("a");
+        g.addNode("b");
+        g.addNode("c");
+
+        g.addEdge("a", "b");
+        g.addEdge("b", "c");
+
+        g.removeNode("b");
+
+        assertFalse(g.getNodes().contains("b"));
+        assertEquals(0, g.getEdges().size());
+    }
+
+    @Test
+    public void testRemoveNodeNotExist() {
+        Graph g = new Graph();
+        g.addNode("a");
+
+        assertThrows(RuntimeException.class, () -> {
+            g.removeNode("x");
+        });
+    }
+
+    @Test
+    public void testRemoveEdgeNotExist() {
+        Graph g = new Graph();
+
+        g.addNode("a");
+        g.addNode("b");
+
+        assertThrows(RuntimeException.class, () -> {
+            g.removeEdge("a", "b");
+        });
+    }
+
+    @Test
+    public void testRemoveMultipleNodes() {
+        Graph g = new Graph();
+
+        g.addNode("a");
+        g.addNode("b");
+        g.addNode("c");
+        g.addNode("d");
+
+        g.addEdge("a", "b");
+        g.addEdge("b", "c");
+        g.addEdge("c", "d");
+
+        String[] toRemove = {"b", "c"};
+        g.removeNodes(toRemove);
+
+        assertFalse(g.getNodes().contains("b"));
+        assertFalse(g.getNodes().contains("c"));
+
+        // all edges involving b and c should be removed
+        assertEquals(0, g.getEdges().size());
+    }
+
 }
+

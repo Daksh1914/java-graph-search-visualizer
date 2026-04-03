@@ -1,5 +1,4 @@
 package asu.cse464.graph;
-
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -185,6 +184,7 @@ public class Graph {
         return edges;
     }
 
+    // BFS (from main branch)
     public Path graphSearch(String src, String dst) {
 
         if (!nodes.contains(src) || !nodes.contains(dst)) {
@@ -226,5 +226,48 @@ public class Graph {
         }
 
         return null;
+    }
+
+
+    // DFS (your implementation)
+    public Path graphSearchDFS(String src, String dst) {
+
+        if (!nodes.contains(src) || !nodes.contains(dst)) {
+            return null;
+        }
+
+        Set<String> visited = new HashSet<>();
+        List<String> path = new ArrayList<>();
+
+        if (dfsHelper(src, dst, visited, path)) {
+            return new Path(path);
+        }
+
+        return null;
+    }
+
+    private boolean dfsHelper(String current, String dst, Set<String> visited, List<String> path) {
+
+        visited.add(current);
+        path.add(current);
+
+        if (current.equals(dst)) {
+            return true;
+        }
+
+        for (String edge : edges) {
+            String[] parts = edge.split("->");
+            String from = parts[0].trim();
+            String to = parts[1].trim();
+
+            if (from.equals(current) && !visited.contains(to)) {
+                if (dfsHelper(to, dst, visited, path)) {
+                    return true;
+                }
+            }
+        }
+
+        path.remove(path.size() - 1);
+        return false;
     }
 }

@@ -5,6 +5,9 @@ import asu.cse464.graph.search.DFSSearch;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import asu.cse464.graph.search.SearchStrategy;
+import asu.cse464.graph.search.BFSSearch;
+import asu.cse464.graph.search.DFSSearch;
 
 public class Graph {
 
@@ -257,13 +260,19 @@ public class Graph {
     }
 
     // STRATEGY ENTRY
+
+
     public Path graphSearch(String src, String dst, Algorithm algo) {
 
+        SearchStrategy strategy;
+
         if (algo == Algorithm.BFS) {
-            return new BFSSearch(this).search(src, dst);
+            strategy = new BFSSearch(this);
         } else {
-            return new DFSSearch(this).search(src, dst);
+            strategy = new DFSSearch(this);
         }
+
+        return strategy.search(src, dst);
     }
 
     //HELPER

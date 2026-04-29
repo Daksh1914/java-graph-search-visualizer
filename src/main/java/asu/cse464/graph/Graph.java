@@ -90,7 +90,7 @@ public class Graph {
             return false;
         }
 
-        return edges.add(srcLabel + " -> " + dstLabel);
+        return edges.add(formatEdge(srcLabel, dstLabel));
     }
 
     // alias
@@ -159,7 +159,7 @@ public class Graph {
     }
 
     public void removeEdge(String srcLabel, String dstLabel) {
-        String target = srcLabel + " -> " + dstLabel;
+        String target = formatEdge(srcLabel, dstLabel);
 
         if (!edges.contains(target)) {
             throw new RuntimeException("Edge does not exist: " + target);
@@ -288,5 +288,9 @@ public class Graph {
 
     private boolean isValidNode(String node) {
         return node != null && nodes.contains(node);
+    }
+
+    private String formatEdge(String src, String dst) {
+        return src + " -> " + dst;
     }
 }

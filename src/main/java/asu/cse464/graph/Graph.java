@@ -1,4 +1,5 @@
 package asu.cse464.graph;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -61,36 +62,30 @@ public class Graph {
         Files.writeString(Paths.get(path), sb.toString());
     }
 
-
-    // Feature 2: add a single node with duplicate check
+    // Feature 2: add a single node
     public boolean addNode(String label) {
         if (label == null || label.trim().isEmpty()) {
             return false;
         }
-
-        return nodes.add(label.trim()); // returns false if duplicate
+        return nodes.add(label.trim());
     }
 
     // Feature 2: add multiple nodes
     public void addNodes(String[] labels) {
         if (labels == null) return;
-
         for (String label : labels) {
             addNode(label);
         }
     }
 
-    // Feature 3: add edge with duplicate checking
+    // Feature 3: add edge
     public boolean addEdge(String srcLabel, String dstLabel) {
 
-        if (srcLabel == null || dstLabel == null) {
-            return false;
-        }
+        if (srcLabel == null || dstLabel == null) return false;
 
         srcLabel = srcLabel.trim();
         dstLabel = dstLabel.trim();
 
-        // Both nodes must exist before adding edge
         if (!nodes.contains(srcLabel) || !nodes.contains(dstLabel)) {
             return false;
         }
@@ -98,20 +93,19 @@ public class Graph {
         return edges.add(srcLabel + " -> " + dstLabel);
     }
 
-    // required alias
+    // alias
     public void outputGraph(String path) throws IOException {
         outputDOTGraph(path);
     }
 
-    // Feature 4: output graphics using Graphviz
+    // Feature 4: Graphviz
     public boolean outputGraphics(String path, String format) {
 
         if (format == null || !format.equalsIgnoreCase("png")) {
-            return false; // Only png required
+            return false;
         }
 
         try {
-            // Create temporary DOT file
             String tempDotPath = "temp_graph.dot";
             outputDOTGraph(tempDotPath);
 
@@ -127,7 +121,6 @@ public class Graph {
             Process process = pb.start();
             int exitCode = process.waitFor();
 
-            // Clean up temporary file
             Files.deleteIfExists(Paths.get(tempDotPath));
 
             return exitCode == 0;
@@ -145,11 +138,10 @@ public class Graph {
 
         nodes.remove(label);
 
-        // remove edges connected to this node
         edges.removeIf(edge -> {
-            String[] parts = edge.split("->");
-            String src = parts[0].trim();
-            String dst = parts[1].trim();
+            String[] parts = parseEdge(edge);
+            String src = parts[0];
+            String dst = parts[1];
             return src.equals(label) || dst.equals(label);
         });
     }
@@ -184,7 +176,7 @@ public class Graph {
         return edges;
     }
 
-    // BFS (from main branch)
+    // BFS
     public Path graphSearch(String src, String dst) {
 
         if (!nodes.contains(src) || !nodes.contains(dst)) {
@@ -210,9 +202,9 @@ public class Graph {
             }
 
             for (String edge : edges) {
-                String[] parts = edge.split("->");
-                String source = parts[0].trim();
-                String neighbor = parts[1].trim();
+                String[] parts = parseEdge(edge);
+                String source = parts[0];
+                String neighbor = parts[1];
 
                 if (source.equals(lastNode) && !visited.contains(neighbor)) {
                     visited.add(neighbor);
@@ -228,8 +220,7 @@ public class Graph {
         return null;
     }
 
-
-    // DFS (your implementation)
+    // DFS
     public Path graphSearchDFS(String src, String dst) {
 
         if (!nodes.contains(src) || !nodes.contains(dst)) {
@@ -256,9 +247,9 @@ public class Graph {
         }
 
         for (String edge : edges) {
-            String[] parts = edge.split("->");
-            String from = parts[0].trim();
-            String to = parts[1].trim();
+            String[] parts = parseEdge(edge);
+            String from = parts[0];
+            String to = parts[1];
 
             if (from.equals(current) && !visited.contains(to)) {
                 if (dfsHelper(to, dst, visited, path)) {
@@ -271,12 +262,19 @@ public class Graph {
         return false;
     }
 
+    // STRATEGY ENTRY
     public Path graphSearch(String src, String dst, Algorithm algo) {
 
         if (algo == Algorithm.BFS) {
-            return graphSearch(src, dst); // existing BFS
+            return graphSearch(src, dst);
         } else {
-            return graphSearchDFS(src, dst); // existing DFS
+            return graphSearchDFS(src, dst);
         }
+    }
+
+    //HELPER
+    private String[] parseEdge(String edge) {
+        String[] parts = edge.split("->");
+        return new String[]{parts[0].trim(), parts[1].trim()};
     }
 }

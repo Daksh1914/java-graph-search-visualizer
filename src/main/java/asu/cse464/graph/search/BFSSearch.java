@@ -1,10 +1,11 @@
 package asu.cse464.graph.search;
 
+import asu.cse464.graph.search.SearchStrategy;
 import asu.cse464.graph.Graph;
 
 import java.util.*;
 
-public class BFSSearch extends GraphSearchTemplate {
+public class BFSSearch extends GraphSearchTemplate implements SearchStrategy {
 
     public BFSSearch(Graph graph) {
         super(graph);

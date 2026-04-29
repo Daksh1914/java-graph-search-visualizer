@@ -1,5 +1,6 @@
 package asu.cse464.graph;
 
+import asu.cse464.graph.Algorithm;
 import org.junit.jupiter.api.Test;
 import java.nio.file.*;
 import static org.junit.jupiter.api.Assertions.*;

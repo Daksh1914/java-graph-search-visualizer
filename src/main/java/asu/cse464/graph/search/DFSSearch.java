@@ -4,7 +4,7 @@ import asu.cse464.graph.Graph;
 
 import java.util.*;
 
-public class DFSSearch extends GraphSearchTemplate {
+public class DFSSearch extends GraphSearchTemplate implements SearchStrategy {
 
     public DFSSearch(Graph graph) {
         super(graph);

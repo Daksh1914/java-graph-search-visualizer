@@ -1,5 +1,7 @@
 package asu.cse464.graph;
 
+import asu.cse464.graph.search.BFSSearch;
+import asu.cse464.graph.search.DFSSearch;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -258,9 +260,9 @@ public class Graph {
     public Path graphSearch(String src, String dst, Algorithm algo) {
 
         if (algo == Algorithm.BFS) {
-            return graphSearchBFS(src, dst);
+            return new BFSSearch(this).search(src, dst);
         } else {
-            return graphSearchDFS(src, dst);
+            return new DFSSearch(this).search(src, dst);
         }
     }
 

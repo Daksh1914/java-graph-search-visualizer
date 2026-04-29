@@ -201,12 +201,8 @@ public class Graph {
                 return new Path(currentPath);
             }
 
-            for (String edge : edges) {
-                String[] parts = parseEdge(edge);
-                String source = parts[0];
-                String neighbor = parts[1];
-
-                if (source.equals(lastNode) && !visited.contains(neighbor)) {
+            for (String neighbor : getNeighbors(lastNode)) {
+                if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
 
                     List<String> newPath = new ArrayList<>(currentPath);
@@ -246,12 +242,8 @@ public class Graph {
             return true;
         }
 
-        for (String edge : edges) {
-            String[] parts = parseEdge(edge);
-            String from = parts[0];
-            String to = parts[1];
-
-            if (from.equals(current) && !visited.contains(to)) {
+        for (String to : getNeighbors(current)) {
+            if (!visited.contains(to)) {
                 if (dfsHelper(to, dst, visited, path)) {
                     return true;
                 }
@@ -276,5 +268,21 @@ public class Graph {
     private String[] parseEdge(String edge) {
         String[] parts = edge.split("->");
         return new String[]{parts[0].trim(), parts[1].trim()};
+    }
+
+    public List<String> getNeighbors(String node) {
+        List<String> neighbors = new ArrayList<>();
+
+        for (String edge : edges) {
+            String[] parts = parseEdge(edge);
+            String source = parts[0];
+            String dest = parts[1];
+
+            if (source.equals(node)) {
+                neighbors.add(dest);
+            }
+        }
+
+        return neighbors;
     }
 }

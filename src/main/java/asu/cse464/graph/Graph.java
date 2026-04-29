@@ -179,7 +179,7 @@ public class Graph {
     // BFS
     public Path graphSearch(String src, String dst) {
 
-        if (!nodes.contains(src) || !nodes.contains(dst)) {
+        if (!isValidNode(src) || !isValidNode(dst)) {
             return null;
         }
 
@@ -219,7 +219,7 @@ public class Graph {
     // DFS
     public Path graphSearchDFS(String src, String dst) {
 
-        if (!nodes.contains(src) || !nodes.contains(dst)) {
+        if (!isValidNode(src) || !isValidNode(dst)) {
             return null;
         }
 
@@ -284,5 +284,9 @@ public class Graph {
         }
 
         return neighbors;
+    }
+
+    private boolean isValidNode(String node) {
+        return node != null && nodes.contains(node);
     }
 }

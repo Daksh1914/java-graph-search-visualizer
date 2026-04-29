@@ -167,7 +167,7 @@ class GraphTest {
         g.addEdge("a", "b");
         g.addEdge("b", "c");
 
-        Path path = g.graphSearch("a", "c");
+        Path path = g.graphSearch("a", "c", Algorithm.BFS);
 
         assertNotNull(path);
         assertEquals("a -> b -> c", path.toString());

@@ -177,7 +177,7 @@ public class Graph {
     }
 
     // BFS
-    public Path graphSearch(String src, String dst) {
+    public Path graphSearchBFS(String src, String dst) {
 
         if (!isValidNode(src) || !isValidNode(dst)) {
             return null;
@@ -258,7 +258,7 @@ public class Graph {
     public Path graphSearch(String src, String dst, Algorithm algo) {
 
         if (algo == Algorithm.BFS) {
-            return graphSearch(src, dst);
+            return graphSearchBFS(src, dst);
         } else {
             return graphSearchDFS(src, dst);
         }

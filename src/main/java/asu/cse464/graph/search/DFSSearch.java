@@ -2,26 +2,35 @@ package asu.cse464.graph.search;
 
 import asu.cse464.graph.Graph;
 
-import java.util.*;
+import java.util.List;
+import java.util.Stack;
 
-public class DFSSearch extends GraphSearchTemplate implements SearchStrategy {
+public class DFSSearch extends GraphSearchTemplate {
+
+    private Stack<List<String>> stack;
 
     public DFSSearch(Graph graph) {
         super(graph);
+        this.stack = new Stack<>();
     }
 
     @Override
-    protected Collection<List<String>> createStructure() {
-        return new Stack<>(); // Stack
+    protected void clearSearchStructure() {
+        stack.clear();
     }
 
     @Override
-    protected void add(Collection<List<String>> structure, List<String> path) {
-        ((Stack<List<String>>) structure).push(path);
+    protected void addPath(List<String> path) {
+        stack.push(path);
     }
 
     @Override
-    protected List<String> remove(Collection<List<String>> structure) {
-        return ((Stack<List<String>>) structure).pop();
+    protected List<String> getNextPath() {
+        return stack.pop();
+    }
+
+    @Override
+    protected boolean hasMorePaths() {
+        return !stack.isEmpty();
     }
 }

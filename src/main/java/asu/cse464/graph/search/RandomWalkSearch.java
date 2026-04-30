@@ -1,68 +1,52 @@
 package asu.cse464.graph.search;
 
-import asu.cse464.graph.Path;
 import asu.cse464.graph.Graph;
+import asu.cse464.graph.Path;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class RandomWalkSearch extends GraphSearchTemplate implements SearchStrategy {
+public class RandomWalkSearch implements SearchStrategy {
 
-    private Random random = new Random();
+    private Graph graph;
+    private Random random;
 
     public RandomWalkSearch(Graph graph) {
-        super(graph);
-    }
-
-    @Override
-    protected Collection<List<String>> createStructure() {
-        return new LinkedList<>();
-    }
-
-    @Override
-    protected void add(Collection<List<String>> structure, List<String> path) {
-        ((Queue<List<String>>) structure).add(path);
-    }
-
-    @Override
-    protected List<String> remove(Collection<List<String>> structure) {
-        return ((Queue<List<String>>) structure).poll();
+        this.graph = graph;
+        this.random = new Random();
     }
 
     @Override
     public Path search(String src, String dst) {
+        List<String> pathList = new ArrayList<>();
+        pathList.add(src);
 
-        if (!graph.getNodes().contains(src) || !graph.getNodes().contains(dst)) {
-            return null;
-        }
+        String currentNode = src;
 
-        List<String> path = new ArrayList<>();
-        Set<String> visited = new HashSet<>();
+        int maxSteps = 100;
+        int steps = 0;
 
-        String current = src;
-        path.add(current);
-        visited.add(current);
+        while (steps < maxSteps) {
+            System.out.println("visiting " + String.join(" -> ", pathList));
 
-        while (!current.equals(dst)) {
+            if (currentNode.equals(dst)) {
+                return new Path(pathList);
+            }
 
-            List<String> neighbors = graph.getNeighbors(current);
+            List<String> neighbors = new ArrayList<>(graph.getNeighbors(currentNode));
 
             if (neighbors.isEmpty()) {
                 return null;
             }
 
-            // pick random neighbor
-            String next = neighbors.get(random.nextInt(neighbors.size()));
+            String nextNode = neighbors.get(random.nextInt(neighbors.size()));
+            pathList.add(nextNode);
+            currentNode = nextNode;
 
-            if (!visited.contains(next)) {
-                path.add(next);
-                visited.add(next);
-                current = next;
-            } else {
-                // avoid infinite loop by breaking
-                return null;
-            }
+            steps++;
         }
 
-        return new Path(path);
+        return null;
     }
 }

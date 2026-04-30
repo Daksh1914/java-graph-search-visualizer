@@ -3,9 +3,12 @@ package asu.cse464.graph.search;
 import asu.cse464.graph.Graph;
 import asu.cse464.graph.Path;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public abstract class GraphSearchTemplate {
+public abstract class GraphSearchTemplate implements SearchStrategy {
 
     protected Graph graph;
 
@@ -13,39 +16,38 @@ public abstract class GraphSearchTemplate {
         this.graph = graph;
     }
 
+    @Override
     public Path search(String src, String dst) {
-
-        if (!graph.getNodes().contains(src) || !graph.getNodes().contains(dst)) {
-            return null;
-        }
-
-        Collection<List<String>> structure = createStructure();
-        Set<String> visited = new HashSet<>();
+        clearSearchStructure();
 
         List<String> startPath = new ArrayList<>();
         startPath.add(src);
+        addPath(startPath);
 
-        add(structure, startPath);
-        visited.add(src);
+        Set<String> visited = new HashSet<>();
 
-        while (!structure.isEmpty()) {
+        while (hasMorePaths()) {
+            List<String> currentPath = getNextPath();
 
-            List<String> currentPath = remove(structure);
-            String lastNode = currentPath.get(currentPath.size() - 1);
+            System.out.println("visiting " + formatPath(currentPath));
 
-            if (lastNode.equals(dst)) {
+            String currentNode = currentPath.get(currentPath.size() - 1);
+
+            if (currentNode.equals(dst)) {
                 return new Path(currentPath);
             }
 
-            for (String neighbor : graph.getNeighbors(lastNode)) {
+            if (visited.contains(currentNode)) {
+                continue;
+            }
+
+            visited.add(currentNode);
+
+            for (String neighbor : graph.getNeighbors(currentNode)) {
                 if (!visited.contains(neighbor)) {
-
-                    visited.add(neighbor);
-
                     List<String> newPath = new ArrayList<>(currentPath);
                     newPath.add(neighbor);
-
-                    add(structure, newPath);
+                    addPath(newPath);
                 }
             }
         }
@@ -53,7 +55,15 @@ public abstract class GraphSearchTemplate {
         return null;
     }
 
-    protected abstract Collection<List<String>> createStructure();
-    protected abstract void add(Collection<List<String>> structure, List<String> path);
-    protected abstract List<String> remove(Collection<List<String>> structure);
+    protected String formatPath(List<String> path) {
+        return String.join(" -> ", path);
+    }
+
+    protected abstract void clearSearchStructure();
+
+    protected abstract void addPath(List<String> path);
+
+    protected abstract List<String> getNextPath();
+
+    protected abstract boolean hasMorePaths();
 }

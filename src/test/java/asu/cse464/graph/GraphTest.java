@@ -1,5 +1,6 @@
 package asu.cse464.graph;
 
+import asu.cse464.graph.Algorithm;
 import org.junit.jupiter.api.Test;
 import java.nio.file.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -167,7 +168,7 @@ class GraphTest {
         g.addEdge("a", "b");
         g.addEdge("b", "c");
 
-        Path path = g.graphSearch("a", "c");
+        Path path = g.graphSearch("a", "c", Algorithm.BFS);
 
         assertNotNull(path);
         assertEquals("a -> b -> c", path.toString());
